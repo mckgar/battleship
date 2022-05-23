@@ -1,4 +1,4 @@
-import ship from './ship';
+import ship from '../ship';
 
 test('Ship is hit when valid target', () => {
   const target = ship(4);
