@@ -2,7 +2,7 @@
   "extends": ["airbnb-base"],
   "overrides": [
     {
-      "files": ["test/**"],
+      "files": ["*.test.js"],
       "plugins": ["jest"],
       "extends": ["plugin:jest/recommended"],
       "rules": { "jest/prefer-expect-assertions": "off" }
