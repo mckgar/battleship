@@ -1,6 +1,7 @@
 const ship = (length) => {
   const health = new Array(length);
   const getHealth = () => health;
+  const getLength = () => length;
   const hit = (target) => {
     if (target < length && target >= 0) {
       health[target] = 1;
@@ -15,7 +16,9 @@ const ship = (length) => {
     return true;
   };
 
-  return { getHealth, hit, isSunk };
+  return {
+    getHealth, getLength, hit, isSunk,
+  };
 };
 
 export default ship;
