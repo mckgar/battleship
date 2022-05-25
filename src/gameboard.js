@@ -1,3 +1,5 @@
+import ship from './ship';
+
 const gameboard = (width, height) => {
   const board = [];
   for (let i = 0; i < width; i += 1) {
@@ -9,17 +11,19 @@ const gameboard = (width, height) => {
   }
   const ships = [];
   const getBoard = () => board;
-  const placeShip = (xCoord, yCoord, ship, direction) => {
+  const getShips = () => ships;
+  const placeShip = (xCoord, yCoord, length, direction) => {
+    const piece = ship(length);
     if (direction === 'horizontal') {
-      for (let i = xCoord; i < xCoord + ship.getLength(); i += 1) {
+      for (let i = xCoord; i < xCoord + piece.getLength(); i += 1) {
         board[i][yCoord] = 'S';
       }
     } else {
-      for (let i = yCoord; i < yCoord + ship.getLength(); i += 1) {
+      for (let i = yCoord; i < yCoord + piece.getLength(); i += 1) {
         board[xCoord][i] = 'S';
       }
     }
-    ships.push({ ship, xStart: xCoord, yStart: yCoord });
+    ships.push({ ship: piece, xStart: xCoord, yStart: yCoord });
   };
   const findShip = (xCoord, yCoord) => {
     for (let i = 0; i < ships.length; i += 1) {
@@ -52,7 +56,7 @@ const gameboard = (width, height) => {
   };
 
   return {
-    getBoard, placeShip, recieveAttack, allSunk,
+    getBoard, getShips, placeShip, recieveAttack, allSunk,
   };
 };
 
