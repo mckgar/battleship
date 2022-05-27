@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Akshar&family=Oswald:wght@700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,33 +7,63 @@
 }
 
 :root {
-  --ship-color: rgba(128, 128, 128, 1);
-  --ship-hit-color: red;
-  --miss-color: whitesmoke;
-  --ocean-color: lightblue;
+  --ship-color: #353946;
+  --ship-hit-color: #9A031E;
+  --miss-color: #FAFAFF;
+  --ocean-color: #38AECC;
+  --select-color: gold;
+
+  --hue: 226;
+  --saturation: 14%;
+  --light: 24%;
+  --hue-change: 70;
+  --light-change: 30%;
 }
 
 body {
   display: grid;
   align-items: center;
   justify-content: center;
+
+  background-color: hsl(
+    var(--hue),
+    var(--saturation),
+    calc(var(--light) + var(--light-change))
+  );
+  color: var(--miss-color);
+
+  font-family: 'Akshar', sans-serif;
 }
 
 #header {
   grid-row: 1;
-  width: 100vw;
+  grid-column: 1 / -1;
+  min-width: 100vw;
   text-align: center;
   border-bottom: 2px solid black;
   box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.2);
   margin-bottom: 1rem;
+  padding: 1rem;
+
+  background-color: hsl(
+    calc(var(--hue) + var(--hue-change)),
+    var(--saturation),
+    calc(var(--light))
+  );
+}
+
+#name {
+  font-size: 3.5rem;
+  font-family: 'Oswald', sans-serif;
 }
 
 #start-form {
   grid-row: 2;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 0.5fr;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 3rem;
 }
 
@@ -46,6 +78,19 @@ body {
 .form-item {
   display: flex;
   flex-direction: column;
+  font-size: 1.3rem;
+}
+
+.form-item label,
+.form-item input {
+  padding-left: 1rem;
+}
+
+.form-item input {
+  border-style: none;
+  border: 1px solid black;
+  border-radius: 1000px;
+  font-size: 1.2rem;
 }
 
 #start-button,
@@ -56,41 +101,39 @@ body {
   align-self: center;
   justify-self: center;
 
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   margin-bottom: 1rem;
   border: 1px solid black;
   border-radius: 1000px;
+  font-size: 1.3rem;
 
   cursor: pointer;
+
+  background-color: hsl(
+    calc(var(--hue) + var(--hue-change)),
+    var(--saturation),
+    calc(var(--light))
+  );
 }
 
 #main {
-  /* height: 100vh; */
   grid-row: 3;
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, calc(min(60vh, 100vw)));
   gap: 3rem;
-}
 
-#player-board {
-  grid-column: 1;
-  grid-row: 1;
-  align-self: center;
-  justify-self: center;
-}
-
-#opponent-board {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: center;
-  justify-self: center;
+  justify-content: center;
 }
 
 #player-board,
 #opponent-board {
+  align-self: center;
+  justify-self: center;
+
   height: min(60vh, 100vw);
   width: min(60vh, 100vw);
-  border: 1px solid black;
+  border: 8px double black;
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   grid-template-rows: repeat(10, 1fr);
@@ -102,7 +145,6 @@ body {
   height: 100%;
   width: 100%;
   border: 1px solid black;
-  /* background-color: var(--ocean-color); */
 }
 
 .space.S,
@@ -121,6 +163,7 @@ body {
 .ship {
   height: 100%;
   width: 100%;
+  border: 2px solid var(--select-color);
 }
 
 .ship.Length5.vertical {
@@ -160,10 +203,15 @@ body {
 }
 
 #opponent-board .space:hover {
-  border: 1px solid gold;
+  border: 1px solid var(--select-color);
 }
 
 #ending-banner {
   grid-row: 4;
   text-align: center;
+  padding: 1rem;
+
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-family: 'Oswald', sans-serif;
 }

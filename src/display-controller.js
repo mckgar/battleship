@@ -4,7 +4,7 @@ const displayController = (() => {
     header.id = 'header';
     const logo = document.createElement('h1');
     logo.id = 'name';
-    logo.textContent = 'Battleship';
+    logo.textContent = 'BATTLESHIP';
     header.appendChild(logo);
     return header;
   };
@@ -192,7 +192,8 @@ const displayController = (() => {
     main.removeChild(document.querySelector('#player-board'));
     const playerBoard = createBoard(player.getBoard());
     playerBoard.id = 'player-board';
-    main.appendChild(playerBoard);
+    const oppenentBoard = document.querySelector('#opponent-board');
+    main.insertBefore(playerBoard, oppenentBoard);
   };
   const updateBoard = (playerBoard, xCoord, yCoord, board) => {
     try {
