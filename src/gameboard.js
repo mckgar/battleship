@@ -2,36 +2,74 @@ import ship from './ship';
 
 const gameboard = (width, height) => {
   const board = [];
-  for (let i = 0; i < width; i += 1) {
-    const col = [];
-    for (let j = 0; j < height; j += 1) {
-      col[j] = 0;
-    }
-    board[i] = col;
-  }
   const ships = [];
+  const setBoard = () => {
+    for (let i = 0; i < width; i += 1) {
+      const col = [];
+      for (let j = 0; j < height; j += 1) {
+        col[j] = 'E';
+      }
+      board[i] = col;
+    }
+  };
+  setBoard();
+
+  const resetBoard = () => {
+    const boardLength = board.length;
+    const shipsLength = ships.length;
+    for (let i = 0; i <= boardLength; i += 1) {
+      board.pop();
+    }
+    for (let i = 0; i <= shipsLength; i += 1) {
+      ships.pop();
+    }
+    setBoard();
+  };
   const getBoard = () => board;
   const getShips = () => ships;
-  const placeShip = (xCoord, yCoord, length, direction) => {
-    const piece = ship(length);
+  const undoShipAdd = (xCoord, yCoord, index, direction) => {
     if (direction === 'horizontal') {
-      for (let i = xCoord; i < xCoord + piece.getLength(); i += 1) {
-        board[i][yCoord] = 'S';
+      for (let i = xCoord; i < index; i += 1) {
+        board[i][yCoord] = 'E';
       }
     } else {
-      for (let i = yCoord; i < yCoord + piece.getLength(); i += 1) {
-        board[xCoord][i] = 'S';
+      for (let i = yCoord; i < index; i += 1) {
+        board[xCoord][i] = 'E';
+      }
+    }
+  };
+  const placeShip = (xCoord, yCoord, length, direction) => {
+    const piece = ship(length);
+    if (direction === 'horizontal' && xCoord + length <= width) {
+      for (let i = xCoord; i < xCoord + length; i += 1) {
+        if (board[i][yCoord] === 'E') {
+          board[i][yCoord] = 'S';
+        } else {
+          undoShipAdd(xCoord, yCoord, i, direction);
+          break;
+        }
+      }
+    } else if (direction === 'vertical' && yCoord + length <= height) {
+      for (let i = yCoord; i < yCoord + length; i += 1) {
+        if (board[xCoord][i] === 'E') {
+          board[xCoord][i] = 'S';
+        } else {
+          undoShipAdd(xCoord, yCoord, i, direction);
+          break;
+        }
       }
     }
     ships.push({ ship: piece, xStart: xCoord, yStart: yCoord });
   };
-  const findShip = (xCoord, yCoord) => {
+  const hitShip = (xCoord, yCoord) => {
     for (let i = 0; i < ships.length; i += 1) {
-      if (ships[i].xStart === xCoord
-          && (yCoord >= ships[i].yStart && yCoord < ships[i].yStart + ships[i].ship.getLength())) {
+      if (ships[i].xStart === parseInt(xCoord, 10)
+          && (yCoord >= ships[i].yStart
+          && yCoord < ships[i].yStart + ships[i].ship.getLength())) {
         ships[i].ship.hit(yCoord - ships[i].yStart);
-      } else if (ships[i].yStart === yCoord
-          && (xCoord >= ships[i].xStart && xCoord < ships[i].xStart + ships[i].ship.getLength())) {
+      } else if (ships[i].yStart === parseInt(yCoord, 10)
+          && (xCoord >= ships[i].xStart
+          && xCoord < ships[i].xStart + ships[i].ship.getLength())) {
         ships[i].ship.hit(xCoord - ships[i].xStart);
       }
     }
@@ -40,8 +78,8 @@ const gameboard = (width, height) => {
     if ((xCoord >= 0 && xCoord < width) && (yCoord >= 0 && yCoord < height)) {
       if (board[xCoord][yCoord] === 'S') {
         board[xCoord][yCoord] = 'H';
-        findShip(xCoord, yCoord);
-      } else if (board[xCoord][yCoord] === 0) {
+        hitShip(xCoord, yCoord);
+      } else if (board[xCoord][yCoord] === 'E') {
         board[xCoord][yCoord] = 'M';
       }
     }
@@ -56,7 +94,7 @@ const gameboard = (width, height) => {
   };
 
   return {
-    getBoard, getShips, placeShip, recieveAttack, allSunk,
+    resetBoard, getBoard, getShips, placeShip, recieveAttack, allSunk,
   };
 };
 
